@@ -20,7 +20,6 @@ class Terminal:
     @property
     def read_line(self) -> str:
         return (self._stdout_line + self._stderr_line).decode('utf-8').rstrip()
-        #return (self._stdout + self._stderr).decode('utf-8').strip()
 
     @property
     def get_output(self) -> str:
@@ -28,7 +27,6 @@ class Terminal:
 
     async def _read_stdout(self) -> None:
         while True:
-            #line = await self._process.stdout.readline()
             line = await self._process.stdout.read(n=1024)
             if line:
                 self._stdout_line = line
@@ -38,7 +36,6 @@ class Terminal:
 
     async def _read_stderr(self) -> None:
         while True:
-            #line = await self._process.stderr.readline()
             line = await self._process.stderr.read(n=1024)
             if line:
                 self._stderr_line = line
@@ -47,7 +44,7 @@ class Terminal:
                 break
 
     async def worker(self) -> None:
-        await asyncio.wait([self._read_stdout(), self._read_stderr()])
+        await asyncio.gather(self._read_stdout(), self._read_stderr())
         await self._process.wait()
         self._finished = True
 
@@ -58,3 +55,4 @@ class Terminal:
         t_obj = cls(process)
         asyncio.get_event_loop().create_task(t_obj.worker())
         return t_obj
+        
