@@ -31,10 +31,10 @@ async def exec_cmd(_: Client, msg: Message):
                 if not k:
                     k = await msg.reply(out_data)
                 else:
-                    await k.edit(out_data)
+                    await k.edit_text(out_data)
             except Exception:
                 pass
-    out_data = f"`{output}{cmd.get_output}`"
+    out_data = f"{output}`{cmd.get_output}`"
     if len(out_data) > 4096:
         if k:
             await k.delete()
@@ -45,6 +45,6 @@ async def exec_cmd(_: Client, msg: Message):
             "terminal.txt", caption=cmd)
         os.remove("terminal.txt")
         return
-    send = k.edit if k else msg.reply
+    send = k.edit_text if k else msg.reply
     await send(out_data)
-
+  
