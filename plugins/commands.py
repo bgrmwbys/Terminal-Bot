@@ -1,7 +1,7 @@
 from functions.functions import ip, get_server_speedtest, get_server_details
 from config import allowed, help_text
 from plugins.markups import start_and_help, refresh_space, base_markup
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 from pyrogram.types import Message, ForceReply
 import os
 
@@ -13,7 +13,7 @@ async def start(_, m: Message):
 
 @Client.on_message(filters.command('ip') & filters.user(allowed))
 async def ip_cmd(_, m: Message):
-    await m.reply(ip(), parse_mode='markdown')
+    await m.reply(ip(), parse_mode=enums.ParseMode.MARKDOWN)
 
 
 @Client.on_message(filters.command('stats') & filters.user(allowed))
@@ -47,3 +47,4 @@ async def cd(client, m: Message):
 @Client.on_message(filters.command('my_files') & filters.user(allowed))
 async def my_files(_, m: Message):
     await m.reply_text('what you want to show?', reply_markup=base_markup)
+    
